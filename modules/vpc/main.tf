@@ -31,10 +31,10 @@ resource "aws_internet_gateway" "eks-igw" {
 
 resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.eks_vpc.id
-  route = {
+  route = [{
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.eks-igw.id
-  }
+  }]
 }
 
 resource "aws_route_table_association" "rt_association_public" {
@@ -58,6 +58,7 @@ resource "aws_subnet" "private_subnet" {
 }
 
 # NAT Gateway
+
 resource "aws_nat_gateway" "eks_nat_gw" {
   count     = length(var.private_subnet_cidrs)
   subnet_id = aws_subnet.private_subnet[count.index].id
@@ -73,7 +74,7 @@ resource "aws_route_table" "private_rt" {
   vpc_id = aws_vpc.eks_vpc.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.eks_nat_gw.id
+    gateway_id = aws_nat_gateway.eks_nat_gw[count.index].id
   }
 }
 
