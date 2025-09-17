@@ -53,8 +53,8 @@ resource "aws_eks_node_group" "main" {
   node_group_name = var.node_group_name
   node_role_arn   = aws_iam_role.eks_worker_iam.arn
   subnet_ids      = var.subnet_ids
-  instance_types = each.value.instance_types
-  capacity_type = each.key.capacity_type
+  instance_types  = each.value.instance_types
+  capacity_type   = each.key.capacity_type
 
   scaling_config {
     desired_size = each.value.scaling_config.desired_size

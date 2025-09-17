@@ -9,14 +9,14 @@ resource "aws_vpc" "eks_vpc" {
 ############## Public Subnets ##############
 
 resource "aws_subnet" "public-subnet" {
-  count = length(var.public_subnet_cidr)
-  vpc_id = aws_vpc.eks_vpc.id
+  count                   = length(var.public_subnet_cidr)
+  vpc_id                  = aws_vpc.eks_vpc.id
   map_public_ip_on_launch = true
-  cidr_block = var.public_subnet_cidr[count.index]
-  availability_zone = var.availability_zones[count.index]
+  cidr_block              = var.public_subnet_cidr[count.index]
+  availability_zone       = var.availability_zones[count.index]
 
   tags = {
-    Name = "${var.eks_cluster_name}-public-subnet-${count.index + 1}" 
+    Name = "${var.eks_cluster_name}-public-subnet-${count.index + 1}"
   }
 }
 
@@ -34,11 +34,11 @@ resource "aws_route_table" "public_rt" {
   route = {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.eks-igw.id
-  }  
+  }
 }
 
 resource "aws_route_table_association" "rt_association_public" {
-  count = length(var.public_subnet_cidr)
+  count          = length(var.public_subnet_cidr)
   subnet_id      = aws_subnet.public-subnet[count.index].id
   route_table_id = aws_route_table.public_rt.id
 }
@@ -47,19 +47,19 @@ resource "aws_route_table_association" "rt_association_public" {
 ############## Private Subnets ##############
 
 resource "aws_subnet" "private-subnet" {
-  count = length(var.private_subnet_cidrs)
-  vpc_id     = aws_vpc.eks_vpc.id
-  cidr_block = var.private_subnet_cidrs[count.index]
+  count             = length(var.private_subnet_cidrs)
+  vpc_id            = aws_vpc.eks_vpc.id
+  cidr_block        = var.private_subnet_cidrs[count.index]
   availability_zone = var.availability_zones[count.index]
 
   tags = {
-    Name = "${var.eks_cluster_name}-private-subnet-${count.index + 1}" 
+    Name = "${var.eks_cluster_name}-private-subnet-${count.index + 1}"
   }
 }
 
 # NAT Gateway
 resource "aws_nat_gateway" "eks_nat_gw" {
-  count = length(var.private_subnet_cidrs)
+  count     = length(var.private_subnet_cidrs)
   subnet_id = aws_subnet.private-subnet[count.index].id
 
   tags = {
@@ -78,7 +78,7 @@ resource "aws_route_table" "private_rt" {
 }
 
 resource "aws_route_table_association" "rt_association_private" {
-  count = length(var.private_subnet_cidrs)
+  count          = length(var.private_subnet_cidrs)
   subnet_id      = aws_subnet.private-subnet[count.index].id
   route_table_id = aws_route_table.private_rt.id
 }
