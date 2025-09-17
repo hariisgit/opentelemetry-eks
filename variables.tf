@@ -49,10 +49,6 @@ variable "eks_cluster_version" {
   type        = string
 }
 
-variable "subnet_ids" {
-
-}
-
 
 
 
