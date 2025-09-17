@@ -33,10 +33,10 @@ module "vpc" {
 module "eks" {
   source = "./modules/eks"
 
-  node_group_name     = var.node_group_name
-  worker_nodes        = var.worker_nodes
   eks_cluster_name    = var.eks_cluster_name
   eks_cluster_version = var.eks_cluster_version
-  subnet_ids          = var.subnet_ids
-
+  subnet_ids          = module.vpc.private_subnets
+  node_group_name     = var.node_group_name
+  worker_nodes        = var.worker_nodes
+  
 }
