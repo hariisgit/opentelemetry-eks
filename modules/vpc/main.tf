@@ -82,5 +82,5 @@ resource "aws_route_table" "private_rt" {
 resource "aws_route_table_association" "rt_association_private" {
   count          = length(var.private_subnet_cidrs)
   subnet_id      = aws_subnet.private_subnet[count.index].id
-  route_table_id = aws_route_table.private_rt.id
+  route_table_id = aws_route_table.private_rt[count.index].id
 }
