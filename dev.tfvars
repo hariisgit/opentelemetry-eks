@@ -8,7 +8,9 @@ node_group_name      = "eks-dev-node-group"
 eks_cluster_version  = "1.33"
 worker_nodes = {
   instance_types = ["t2.micro"]
-  capacity_type  = "ON_DEMAND"
+  capacity_type  = {
+    type = "ON_DEMAND"
+  }
   scaling_config = {
     desired_size = 2
     max_size     = 3
