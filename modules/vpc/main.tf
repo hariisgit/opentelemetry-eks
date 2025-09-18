@@ -31,10 +31,10 @@ resource "aws_internet_gateway" "eks-igw" {
 
 resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.eks_vpc.id
-  route = [{
+  route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.eks-igw.id
-  }]
+  }
 }
 
 resource "aws_route_table_association" "rt_association_public" {
