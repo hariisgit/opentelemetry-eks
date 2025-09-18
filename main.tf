@@ -38,5 +38,5 @@ module "eks" {
   subnet_ids          = module.vpc.private_subnets
   node_group_name     = var.node_group_name
   worker_nodes        = var.worker_nodes
-  
+
 }

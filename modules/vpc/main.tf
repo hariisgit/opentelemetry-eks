@@ -71,6 +71,7 @@ resource "aws_nat_gateway" "eks_nat_gw" {
 }
 
 resource "aws_route_table" "private_rt" {
+  count  = length(var.private_subnet_cidrs)
   vpc_id = aws_vpc.eks_vpc.id
   route {
     cidr_block = "0.0.0.0/0"
